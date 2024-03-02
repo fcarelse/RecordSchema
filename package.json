@@ -1,6 +1,6 @@
 {
   "name": "recordschema",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Record Schema System for RecordArray objects",
   "main": "lib/RecordSchema.js",
   "scripts": {
