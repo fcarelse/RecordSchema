@@ -2,21 +2,29 @@
   "name": "recordschema",
   "version": "0.0.1",
   "description": "Record Schema System for RecordArray objects",
-  "main": "src/RecordSchema.js",
+  "main": "lib/RecordSchema.js",
   "scripts": {
-    "test": "npx mocha",
-		"docs":"npx http-server docs"
+    "test": "npx jest",
+    "prebuild": "npm i",
+    "build": "bash -c \"npx tsc src/*.ts --outDir lib --target es6 --moduleResolution node --declaration\"",
+    "postbuild": "bash -c \"npx tsc src/*.ts --outDir node\"",
+    "prepublish": "npm run build",
+    "docs": "npx http-server docs"
   },
+  "files": [
+    "lib/**/*",
+    "node/**/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fcarelse/recordschema.git"
   },
   "keywords": [
-		"recordschema",
+    "recordschema",
     "recordarray",
     "array",
     "javascript",
-    "records"
+    "record"
   ],
   "author": "Francis Carelse",
   "license": "MIT",
@@ -24,10 +32,7 @@
     "url": "https://github.com/fcarelse/recordschema/issues"
   },
   "homepage": "https://github.com/fcarelse/recordschema#readme",
-  "devDependencies": {
-    "babel-eslint": "^10.0.3",
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.5.0",
-    "mocha": "^7.0.1"
+  "dependencies": {
+    "fxcie-utils": "^0.0.5"
   }
 }
