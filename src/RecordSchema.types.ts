@@ -1,20 +1,15 @@
-// Temporary added in here. To be replaced with the RecordArray import in the future.
-export type RecordArraySelectType = "select" | "selecttag" | "selectid";
-export type RecordArrayJsonType = "jsonarray" | "jsonobject";
-export type RecordArrayFieldType =
+export type RecordSchemaSelectType = "select" | "selecttag" | "selectid";
+export type RecordSchemaJsonType = "jsonarray" | "jsonobject";
+export type RecordSchemaFieldType =
   | "string"
   | "text"
   | "number"
   | "date"
   | "datetime"
   | "time"
-  | RecordArraySelectType
-  | RecordArrayJsonType;
+  | RecordSchemaJsonType;
 
-export const RECORDARRAY_BASIC_TYPES = [
-  "select",
-  "selecttag",
-  "selectid",
+export const RECORDSCHEMA_BASIC_TYPES = [
   "jsonarray",
   "jsonobject",
   "string",
@@ -25,30 +20,48 @@ export const RECORDARRAY_BASIC_TYPES = [
   "time",
 ];
 
-export type RecordArrayRestrictionsType = {
-  create?: string;
-  read?: string;
-  update?: string;
-  delete?: string;
-  list?: string;
+export const RECORDSCHEMA_SELECT_TYPES = ["select", "selectid", "selecttag"];
+
+export const RECORDSCHEMA_TYPES = ["select", "selectid", "selecttag"];
+
+export type RecordSchemaAuthType = {
+  create: string;
+  read: string;
+  update: string;
+  delete: string;
+  list: string;
 };
 
 export type RecordSchemaMetaType = {
   table: string;
-  restriction: RecordArrayRestrictionsType;
+  auth?: RecordSchemaAuthType;
 };
 
-export type RecordSchemaModelFieldType = {
+export type RecordSchemaModelFieldSelectType = {
   field: string;
   label: string;
-  type: RecordArrayFieldType;
-  restrictions: RecordArrayRestrictionsType;
+  type: RecordSchemaSelectType;
+  select: string;
+  auth?: RecordSchemaAuthType;
 };
 
-export type RecordSchemaModelType = {
-  id: RecordSchemaModelFieldType;
-  tag: RecordSchemaModelFieldType;
+export type RecordSchemaModelFieldValueType = {
+  field: string;
+  label: string;
+  type: RecordSchemaFieldType;
+  auth?: RecordSchemaAuthType;
 };
+
+export type RecordSchemaModelFieldType =
+  | RecordSchemaModelFieldSelectType
+  | RecordSchemaModelFieldValueType;
+
+export type RecordSchemaFieldName = "id" | "tag" | string;
+
+export type RecordSchemaModelType = Record<
+  RecordSchemaFieldName,
+  RecordSchemaModelFieldType
+>;
 
 export type RecordSchemaType = {
   meta: RecordSchemaMetaType;

@@ -1,5 +1,10 @@
-import { isNonEmptyString } from "fxcie-utils";
-import { RecordSchemaType } from "./RecordSchema.types";
+import { isNonEmptyString, isObject } from "fxcie-utils";
+import {
+  RECORDSCHEMA_BASIC_TYPES,
+  RECORDSCHEMA_SELECT_TYPES,
+  RecordSchemaModelType,
+  RecordSchemaType,
+} from "./RecordSchema.types";
 import { DEFAULT_META, DEFAULT_MODEL } from "./RecordSchema.values";
 
 export class RecordSchema {
@@ -11,22 +16,29 @@ export class RecordSchema {
   }
 
   static genFromJSON(temp: RecordSchemaType) {
-    if (!(temp instanceof Object)) return false;
+    if (!isObject(temp)) return false;
     const meta = { ...temp.meta };
   }
 
   static isValidMeta(sample: any) {
-    if (!(sample instanceof Object)) return false;
+    if (!isObject(sample)) return false;
+    if (isNonEmptyString(sample.table)) return false;
     return true;
   }
 
   static isValidModel(sample: any) {
     if (!(sample instanceof Object)) return false;
     const fields = Object.keys(sample);
-    return fields.reduce((fail, field) => {
-      if (isNonEmptyString(sample[field])) fail = false;
-      if (!sample[field].label) return false;
-      return fail;
-    }, true);
+    for (const field in fields) {
+      if (isNonEmptyString(sample[field].field)) return false;
+      if (isNonEmptyString(sample[field].label)) return false;
+      if (isNonEmptyString(sample[field].type)) return false;
+      if (RECORDSCHEMA_SELECT_TYPES.includes(sample[field].type)) {
+        if (isNonEmptyString(sample[field].select)) return false;
+      } else if (!RECORDSCHEMA_BASIC_TYPES.includes(sample[field].type)) {
+        return false;
+      }
+    }
+    return true;
   }
 }
