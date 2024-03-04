@@ -1,3 +1,7 @@
+# build folders
+lib
+node
+
 # Logs
 logs
 *.log
